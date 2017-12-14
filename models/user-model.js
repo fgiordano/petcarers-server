@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
+const ROLES     = require('./roles-types');
+const Pet       = mongoose.model.Pet;
+
 
 const userSchema = new Schema({
   email      : { type: String},
