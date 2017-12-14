@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const dbName = 'angular-auth';
+const dbName = 'petcarers-server';
 
 
 mongoose.connect(`mongodb://localhost/${dbName}`, { useMongoClient: true });
