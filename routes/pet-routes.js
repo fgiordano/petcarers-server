@@ -35,4 +35,64 @@ router.post('/pets', function(req, res) {
   });
 });
 
+/* GET a single Pet */
+router.get('/pets/:id', (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
+  
+  Pet.findById(req.params.id, (err, thePet) => {
+      if (err) {
+        res.json(err);
+        return;
+      }
+
+      res.json(thePet);
+    });
+});
+
+/* EDIT a Pet. */
+router.put('/pets/:id', (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
+
+  const updates = {
+    name: req.body.name,
+    age: req.body.age
+  };
+  
+  Pet.findByIdAndUpdate(req.params.id, updates, (err) => {
+    if (err) {
+      res.json(err);
+      return;
+    }
+
+    res.json({
+      message: 'Pet updated successfully'
+    });
+  });
+})
+
+/* DELETE a Pet. */
+router.delete('/pets/:id', (req, res) => {
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
+  
+  Pet.remove({ _id: req.params.id }, (err) => {
+    if (err) {
+      res.json(err);
+      return;
+    }
+
+    return res.json({
+      message: Pet has been removed!'
+    });
+  })
+});
+
 module.exports = router;
