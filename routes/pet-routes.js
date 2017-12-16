@@ -7,7 +7,7 @@ const Pet = require('../models/pet-model');
 
 /* GET Pet listing. */
 router.get('/pets', (req, res, next) => {
-  Pet.find((err, phonesList) => {
+  Pet.find((err, petList) => {
     if (err) {
       res.json(err);
       return;
@@ -17,7 +17,7 @@ router.get('/pets', (req, res, next) => {
 });
 
 /* CREATE a new Pet. */
-router.post('/pets', upload.single('file'), function(req, res) {
+router.post('/pets', function(req, res) {
   const pet = new Pet({
     name: req.body.name,
     age: req.body.age,
@@ -34,3 +34,5 @@ router.post('/pets', upload.single('file'), function(req, res) {
     });
   });
 });
+
+module.exports = router;

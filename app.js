@@ -6,16 +6,19 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
+var mongoose = require('mongoose');
+var cors = require('cors');
+
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 const authRoutes = require('./routes/auth-routes');
-var petRoutes = require('./routes/pet-routes');
-
+var pets = require('./routes/pet-routes');
 require('./config/database-setup');
 require('./config/passport-setup');
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
