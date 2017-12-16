@@ -90,7 +90,7 @@ router.delete('/pets/:id', (req, res) => {
     }
 
     return res.json({
-      message: Pet has been removed!'
+      message: 'pet has been removed!'
     });
   })
 });
