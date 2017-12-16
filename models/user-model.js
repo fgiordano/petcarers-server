@@ -10,7 +10,7 @@ const userSchema = new Schema({
   password   : { type: String, required: true },
   aboutme    : { type: String},
   // role       : { type: String, enum: ROLES },
-  // pet        : { type: Schema.Types.ObjectId, ref: 'Pet'},
+  pets       [{ type: Schema.Types.ObjectId, 'default': [], ref: 'Pet'}],
   image      : { type: String, default: "https://www.menon.no/wp-content/uploads/person-placeholder.jpg" }
 }, {
   timestamps: {
