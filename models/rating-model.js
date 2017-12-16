@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const reviewSchema = new Schema({
+const ratingSchema = new Schema({
   content: {
     type: String,
     required: [true, 'Please tell us about your review.'],
@@ -24,7 +24,7 @@ const reviewSchema = new Schema({
   // product: { type: Schema.Types.ObjectId }
 });
 
-const Review = mongoose.model('Review', reviewSchema);
+const Rating = mongoose.model('Review', ratingSchema);
 
 
-module.exports = Review;
+module.exports = Rating;
