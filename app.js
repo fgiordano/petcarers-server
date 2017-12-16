@@ -10,6 +10,7 @@ const session = require('express-session');
 var index = require('./routes/index');
 var users = require('./routes/users');
 const authRoutes = require('./routes/auth-routes');
+var petRoutes = require('./routes/pet-routes');
 
 require('./config/database-setup');
 require('./config/passport-setup');
@@ -41,6 +42,7 @@ app.use(passport.session());
 app.use('/', index);
 app.use('/users', users);
 app.use('/', authRoutes);
+app.use('/', pets);
 
 app.use((req, res, next) => {
   res.sendfile(__dirname + '/public/index.html');
