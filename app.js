@@ -14,6 +14,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 const authRoutes = require('./routes/auth-routes');
 var pets = require('./routes/pet-routes');
+var ratings = require('./routes/rating-routes');
 require('./config/database-setup');
 require('./config/passport-setup');
 
@@ -46,6 +47,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/', authRoutes);
 app.use('/', pets);
+app.use('/', ratings);
 
 app.use((req, res, next) => {
   res.sendfile(__dirname + '/public/index.html');
