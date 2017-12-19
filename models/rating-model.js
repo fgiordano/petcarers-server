@@ -1,30 +1,18 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
-
+const User     = require('./user-model');
 
 const ratingSchema = new Schema({
-  content: {
-    type: String,
-    required: [true, 'Please tell us about your review.'],
-    minlength: [50, 'Please write at least 50 characters.'],
-    maxlength: [400, 'Type less please.']
-  },
+  author : { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  content: { type: String, required: true },
   stars: {
     type: Number,
-    required: [true, 'Rate the product.'],
+    required: [true, 'Rate your petcarer'],
     min: [1, 'Ratings can be no lower than 1 star.'],
     max: [5, 'Ratings can be no better than 5 stars.']
-  },
-  author: {
-    type: String,
-    required: [true, 'Please provide your name']
-  },
-  // BY REFERENCE INSTEAD OF SUBDOCUMENTS
-  // product: { type: Schema.Types.ObjectId }
+  }
 });
 
-const Rating = mongoose.model('Review', ratingSchema);
+const Rating = mongoose.model('Rating', ratingSchema);
 
-
-module.exports = Rating;
+module.exports = Rating; 

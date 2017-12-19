@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 const Pet = require('../models/pet-model');
+const User = require ('../models/user-model');
 // const upload = require('../configs/multer');
 
 /* GET Pet listing. */
@@ -18,15 +19,24 @@ router.get('/pets', (req, res, next) => {
 
 /* CREATE a new Pet. */
 router.post('/pets', function(req, res) {
+	console.log('checking the req', req.user)
   const pet = new Pet({
     name: req.body.name,
     age: req.body.age,
+    owner: req.user._id,
+    breed: req.body.breed,
+    weight: req.body.weight,
+    aboutme: req.body.aboutme
   });
+
+  const userId = req.user._id;
 
   pet.save((err) => {
     if (err) {
       return res.send(err);
     }
+
+  User.findByIdAndUpdate({ _id: userId }, { $push: { pets: pet._id }}).exec();
 
     return res.json({
       message: 'New Pet added!',
