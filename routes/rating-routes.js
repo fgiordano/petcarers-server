@@ -22,7 +22,8 @@ router.post('/ratings', function(req, res) {
   const rating = new Rating({
     content: req.body.content,
     stars: req.body.stars,
-    author: req.user._id
+    author: req.user._id,
+    aboutCarer: req.body.aboutCarer
   });
 
   const userId = req.user._id;
@@ -32,7 +33,7 @@ router.post('/ratings', function(req, res) {
       return res.send(err);
     }
 
-  User.findByIdAndUpdate({ _id: userId }, { $push: { ratings: rating._id }}).exec();
+  User.findByIdAndUpdate({ _id: userId }, { $push: { receivedRatings: rating._id }}).exec();
 
     return res.json({
       message: 'New Rating created!',
