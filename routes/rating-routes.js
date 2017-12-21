@@ -26,7 +26,8 @@ router.post('/ratings', function(req, res) {
     aboutCarer: req.body.aboutCarer
   });
 
-  const userId = req.user._id;
+  // const userId = req.user._id;
+  const userId = req.body.aboutCarer;
 
   rating.save((err) => {
     if (err) {
@@ -90,7 +91,7 @@ router.delete('/ratings/:id', (req, res) => {
     return;
   }
   
-  Ratings.remove({ _id: req.params.id }, (err) => {
+  Rating.remove({ _id: req.params.id }, (err) => {
     if (err) {
       res.json(err);
       return;
