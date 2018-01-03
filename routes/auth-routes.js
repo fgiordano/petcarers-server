@@ -35,14 +35,14 @@ router.post('/api/signup', (req, res, next) => {
           const scrambledPassword = bcrypt.hashSync(req.body.signupPassword, salt);
 
           const theUser = new UserModel({
-            fullName: req.body.signupFullName,
+            username: req.body.signupUsername,
             email: req.body.signupEmail,
             encryptedPassword: scrambledPassword
           });
 
           theUser.save((err) => {
               if (err) {
-                res.status(500).json({ message: 'User save went to 💩' });
+                res.status(500).json({ message: req.body.signupUsername});
                 return;
               }
 
