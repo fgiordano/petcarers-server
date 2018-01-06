@@ -1,65 +1,65 @@
 const passport = require('passport');
-const bcrypt = require('bcrypt');
-const LocalStrategy = require('passport-local').Strategy;
+// const bcrypt = require('bcrypt');
+// const LocalStrategy = require('passport-local').Strategy;
 
 
-const UserModel = require('../models/user-model');
+const User = require('../models/user-model');
 
 
 // Save the user's ID in the bowl (called when user logs in)
-passport.serializeUser((userFromDb, next) => {
-    next(null, userFromDb._id);
+passport.serializeUser((loggedInUser, cb) => {
+    cb(null, loggedInUser._id);
 });
 
 
 // Retrieve the user's info from the DB with the ID we got from the bowl
-passport.deserializeUser((idFromBowl, next) => {
-    UserModel.findById(
-      idFromBowl,
-      (err, userFromDb) => {
+passport.deserializeUser((userIdFromSession, cb) => {
+    User.findById(
+      userIdFromSession,
+      (err, userDocument) => {
           if (err) {
-            next(err);
+            cb(err);
             return;
           }
 
-          next(null, userFromDb);
+          cb(null, userDocument);
       }
     );
 });
 
 
 // email & password login strategy
-passport.use(new LocalStrategy(
-  {
-    usernameField: 'blahEmail',    // sent through AJAX from Angular
-    passwordField: 'blahPassword'  // sent through AJAX from Angular
-  },
-  (theEmail, thePassword, next) => {
+// passport.use(new LocalStrategy(
+//   {
+//     usernameField: 'username',    // sent through AJAX from Angular
+//     passwordField: 'password'  // sent through AJAX from Angular
+//   },
+//   (theUserName, thePassword, next) => {
+//       console.log("USER FINDING!!!");
+//       UserModel.findOne(
+//         { username: theUserName },
+//         (err, userFromDb) => {
+//             if (err) {
+//               next(err);
+//               return;
+//             }
 
-      UserModel.findOne(
-        { email: theEmail },
-        (err, userFromDb) => {
-            if (err) {
-              next(err);
-              return;
-            }
+//             if (userFromDb === null) {
+//               next(null, false, { message: 'Incorrect email 💩' });
+//               return;
+//             }
 
-            if (userFromDb === null) {
-              next(null, false, { message: 'Incorrect email 💩' });
-              return;
-            }
+//             if (bcrypt.compareSync(thePassword, userFromDb.encryptedPassword) === false) {
+//               next(null, false, { message: 'Incorrect password 💩' });
+//               return;
+//             }
 
-            if (bcrypt.compareSync(thePassword, userFromDb.encryptedPassword) === false) {
-              next(null, false, { message: 'Incorrect password 💩' });
-              return;
-            }
+//             next(null, userFromDb);
+//         }
+//       ); // close UserModel.findOne()
 
-            next(null, userFromDb);
-        }
-      ); // close UserModel.findOne()
-
-  } // close (theEmail, thePassword, next) => {
-));
+//   } // close (theEmail, thePassword, next) => {
+// ));
 
 
 

@@ -8,7 +8,7 @@ const Rating   = mongoose.model.Rating;
 const myUserSchema = new Schema({
   email           : { type: String},
   username        : { type: String, required: true },
-  encryptedPassword        : { type: String, required: true },
+  password        : { type: String, required: true },
   aboutme         : { type: String},
   // role         : { type: String, enum: ROLES },
   pets            : [{ type: Schema.Types.ObjectId, 'default': [], ref: 'Pet'}],

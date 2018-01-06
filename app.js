@@ -15,9 +15,7 @@ require('dotenv').config();
 
 require('./config/passport-setup');
 
-
 // mongoose.connect(process.env.MONGODB_URI);
-
 
 const app = express();
 
@@ -32,7 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'angular and express and auth and shhhhh',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie : { httpOnly: true, maxAge: 2419200000}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -59,6 +58,16 @@ app.use((req, res, next) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+//error handler
+// app.use((req, res, next) {
+// 	// set locals, only providing error in development 
+// 	res.locals.message = err.message;
+// 	res.locals.errors = req.app.get('env') === 'development' ? err : {};
+
+// 	//render the error page
+// 	res.status(err.status || 500);
+// 	res.rener('error');
+// });
 
 module.exports = app;
 
