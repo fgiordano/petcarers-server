@@ -48,8 +48,8 @@ app.use('/', myAuthRoutes);
 const myUserRoutes = require('./routes/user-routes');
 app.use('/', myUserRoutes);
 
-// const myCamelRoutes = require('./routes/camel-routes');
-// app.use('/', myCamelRoutes);
+const myPetRoutes = require('./routes/pet-routes');
+app.use('/', myPetRoutes);
 // -----------------------------------------------------------------------------
 
 

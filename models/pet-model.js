@@ -4,8 +4,8 @@ const PETTYPE   = require('./pet-types');
 const User     = require('./user-model');
 
 
-const PetSchema = new Schema({
-  owner      : { type: Schema.Types.ObjectId, ref: 'User', required: true },
+const myPetSchema = new Schema({
+  user      : { type: Schema.Types.ObjectId, ref: 'User', required: true },
   name       : { type: String, required: true },
   // type       : { type: String, enum: PETTYPE, required: true },
   breed      : { type: String },
@@ -16,9 +16,9 @@ const PetSchema = new Schema({
   // imgUrl     : { type: String, default: "https://placeholdit.imgix.net/~text?txtsize=33&txt=250%C3%97250&w=250&h=250" }
 });
 
-PetSchema.methods.belongsTo = function(user){
-  return this.owner.equals(user._id);
+myPetSchema.methods.belongsTo = function(user){
+  return this.user.equals(user._id);
 }
 
-const Pet = mongoose.model('Pet', PetSchema);
-module.exports = Pet;
+const PetModel = mongoose.model('Pet', myPetSchema);
+module.exports = PetModel;
