@@ -55,7 +55,13 @@ router.post('/api/login', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
+  // const {password, username} = req.body; same as ^
+
   User.findOne({username: username}, (err, foundUser) => {   // query accounts by username entered
+
+  	if (err) {
+  		console.log(err, "Failed to get user in Login Route")
+  	}
 
     if (!username || !password ){ // if no username or password is found execute a server 400 res
       res.status(400).json({message: 'Please make sure all required fields are filled out correctly.'});
@@ -73,6 +79,7 @@ router.post('/api/login', (req, res, next) => {
   }
 
   // log the user in
+
   req.login(foundUser, (err) => {
     foundUser.password = undefined; // hides the bcrypt password so it doenst return in the response
     // res.status(200).json({message: 'Log in successful!'});

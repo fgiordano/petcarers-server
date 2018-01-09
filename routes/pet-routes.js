@@ -26,46 +26,35 @@ router.post(
         user: req.user._id
       });
 
+      console.log(thePet);
+
       if (req.file) {
         thePet.picture = '/uploads/' + req.file.filename;
       }
+      req.user.pets.push(thePet);
 
       thePet.save((err) => {
           // Unknown error from the database
-          if (err && thePet.errors === undefined) {
+          if (err) {
             res.status(500).json({ message: 'Pet save went to 💩' });
             return;
           }
 
-          // Validation error
-          if (err && thePet.errors) {
-            res.status(400).json({
-              nameError: thePet.errors.name,
-              ageError: thePet.errors.age
-            });
-            return;
-          }
-
           // Put the full user info here for Angular
-          req.user.password = undefined;
-          thePet.user = req.user;
-
-    req.user.pets.push(thePet);
-
-    req.user.save((err) => {
-      if (err) {
-        res.json({message: 'Something went wrong.'});
-        return;
-      }
-
-      // Success!
-      res.status(200).json(thePet);
-    });
   // }
   // else // otherwise res serve 403 (forbidden)
   // res.status(403).json({ message: 'Unauthorized. Please login.' });
 
+     req.user.save((err) => {
+      if (err) {
+        console.log('Errors saving USER in New Pets Route',err)
+        return res.status(500).json({message: 'Something went wrong.',err});
+      } else {
+        res.status(200).json(thePet);
+      }
 
+      // Success!
+    });
 
 
 
@@ -84,10 +73,10 @@ router.get('/api/pets', (req, res, next) => {
     }
 
     PetModel
-      .find()
+      .find({user:req.user._id})
 
       // retrieve all the info of the owners (needs "ref" in model)
-      .populate('user', { password: 0 })
+
       // don't retrieve "encryptedPassword" though
 
       .exec((err, allPets) => {
