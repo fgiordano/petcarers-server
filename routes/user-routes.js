@@ -3,11 +3,33 @@ const mongoose = require('mongoose');
 const User = require('../models/user-model');
 const router = express.Router();
 
-router.get('/api/user', (req, res, next) => {
-  if (req.isAuthenticated()) {
-    res.status(200).json(req.user);
+// router.get('/api/user/:id', (req, res, next) => {
+//   if (req.isAuthenticated()) {
+//     res.status(200).json(req.user);
+//     return;
+//   }
+// });
+
+router.get('/api/user/:id', (req, res) => {
+
+  // if (req.isAuthenticated()) {
+  //   res.status(200).json({ message: 1 });
+  //   return;
+  // }
+
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
+  
+  User.findById(req.params.id, (err, user) => {
+      if (err) {
+        res.json(err);
+        return;
+      }
+
+      res.json(user);
+    });
 });
 
 //-------------------------------------------------------- Edit admin route
