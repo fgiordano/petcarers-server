@@ -32,6 +32,7 @@ router.post(
         thePet.picture = '/uploads/' + req.file.filename;
       }
       req.user.pets.push(thePet);
+      console.log();
 
       thePet.save((err) => {
           // Unknown error from the database
@@ -63,7 +64,7 @@ router.post(
           //include here the UPDATE to update the user to have the new pet
 
       }); // close theCamel.save()
-}); // close router.post('/api/camels', ...
+}); // close router.post('/api/..., ...
 
 
 router.get('/api/pets', (req, res, next) => {
@@ -81,7 +82,32 @@ router.get('/api/pets', (req, res, next) => {
 
       .exec((err, allPets) => {
           if (err) {
-            res.status(500).json({ message: 'Pet find went to 💩' });
+            res.status(500).json({ message: 'Pet find went wrong' });
+            return;
+          }
+
+          res.status(200).json(allPets);
+      });
+}); // close router.get('/api/camels', ...
+
+//-------------------get other users pets
+
+router.get('/api/pets/:id', (req, res, next) => {
+    if (!req.user) {
+      res.status(401).json({ message: 'Log in to see pets' });
+      return;
+    }
+
+    PetModel
+      .find({user:req.params.id})
+
+      // retrieve all the info of the owners (needs "ref" in model)
+
+      // don't retrieve "encryptedPassword" though
+
+      .exec((err, allPets) => {
+          if (err) {
+            res.status(500).json({ message: 'Pet find went wrong' });
             return;
           }
 

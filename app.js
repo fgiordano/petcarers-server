@@ -50,6 +50,9 @@ app.use('/', myUserRoutes);
 
 const myPetRoutes = require('./routes/pet-routes');
 app.use('/', myPetRoutes);
+
+const myReviewRoutes = require('./routes/rating-routes');
+app.use('/', myReviewRoutes);
 // -----------------------------------------------------------------------------
 
 
