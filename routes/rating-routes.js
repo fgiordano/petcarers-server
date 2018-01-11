@@ -31,7 +31,7 @@ router.post('/api/reviews/:id', (req, res, next) => {
             return;
           }
           user.receivedRatings.push(review._id);
-        }); 
+         
 
         user.save((err) => {
           if (err) {
@@ -43,8 +43,10 @@ router.post('/api/reviews/:id', (req, res, next) => {
 
         });
 
-      }); //
-       
+      }); // close the review save
+
+    }); // close user find by id
+
 }); // close router.post('/api/..., ...
 
 
