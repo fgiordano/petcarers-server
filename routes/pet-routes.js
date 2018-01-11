@@ -31,39 +31,29 @@ router.post(
       if (req.file) {
         thePet.picture = '/uploads/' + req.file.filename;
       }
+
       req.user.pets.push(thePet);
       console.log();
 
       thePet.save((err) => {
           // Unknown error from the database
           if (err) {
-            res.status(500).json({ message: 'Pet save went to 💩' });
+            res.status(500).json({ message: 'Pet save went wrong' });
             return;
           }
 
-          // Put the full user info here for Angular
-  // }
-  // else // otherwise res serve 403 (forbidden)
-  // res.status(403).json({ message: 'Unauthorized. Please login.' });
+        req.user.save((err) => {
+          if (err) {
+            console.log('Errors saving USER in New Pets Route',err)
+            return res.status(500).json({message: 'Something went wrong.',err});
+          } else {
+            res.status(200).json(thePet);
+          }
 
-     req.user.save((err) => {
-      if (err) {
-        console.log('Errors saving USER in New Pets Route',err)
-        return res.status(500).json({message: 'Something went wrong.',err});
-      } else {
-        res.status(200).json(thePet);
-      }
+        });       //include here the UPDATE to update the user to have the new pet
 
-      // Success!
-    });
+    }); 
 
-
-
-
-
-          //include here the UPDATE to update the user to have the new pet
-
-      }); // close theCamel.save()
 }); // close router.post('/api/..., ...
 
 

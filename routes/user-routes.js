@@ -32,6 +32,42 @@ router.get('/api/user/:id', (req, res) => {
     });
 });
 
+//------get all users
+
+router.get('/api/user/', (req, res) => {
+
+  // if (req.isAuthenticated()) {
+  //   res.status(200).json({ message: 1 });
+  //   return;
+  // }
+
+  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
+  
+  User.findById(req.params.id, (err, user) => {
+      if (err) {
+        res.json(err);
+        return;
+      }
+
+      res.json(user);
+    });
+});
+
+
+router.get('/api/users', (req, res, next)=>{
+
+  User.find((err, usersList)=>{
+    if(err){
+      res.json(err);
+      return;
+    }
+    res.json(usersList);
+  });
+});
+
 //-------------------------------------------------------- Edit admin route
 router.put('/api/user/edit', (req, res) => {
   if (req.isAuthenticated()) {

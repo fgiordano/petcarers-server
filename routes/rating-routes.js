@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 
 const ReviewModel = require('../models/rating-model');
 const User = require ('../models/user-model');
-// const upload = require('../configs/multer');
 
 router.post('/api/reviews/:id', (req, res, next) => {
       if (!req.user) {
@@ -27,7 +26,7 @@ router.post('/api/reviews/:id', (req, res, next) => {
         theReview.save((err, review) => {
           // Unknown error from the database
           if (err) {
-            res.status(500).json({ message: 'Review save went wrong' });
+            res.status(500).json({ message: 'Review save went wrong' + err });
             return;
           }
           user.receivedRatings.push(review._id);
@@ -50,27 +49,32 @@ router.post('/api/reviews/:id', (req, res, next) => {
 }); // close router.post('/api/..., ...
 
 
-router.get('/api/reviews', (req, res, next) => {
+router.get('/api/reviews/:id', (req, res, next) => {
     if (!req.user) {
-      res.status(401).json({ message: 'Log in to leave a review' });
+      res.status(401).json({ message: 'Log in to see a review' });
       return;
     }
 
-    ReviewModel
-      .find({user:req.body.user._id})
+    User.findById(req.params.id, (err, user) => {
+        if (err) {
+          res.json(err);
+          return;
+        }
 
-      // retrieve all the info of the owners (needs "ref" in model)
+      ReviewModel
+        .find({aboutCarer: user})
 
-      // don't retrieve "encryptedPassword" though
-
-      .exec((err, allReviews) => {
-          if (err) {
+        .exec((err, allReviews) => {
+            if (err) {
             res.status(500).json({ message: 'Review find went wrong' });
             return;
           }
 
           res.status(200).json(allReviews);
       });
+
+    });
+
 }); // close router.get('/api/camels', ...
 
 
