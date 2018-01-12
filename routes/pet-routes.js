@@ -56,6 +56,8 @@ router.post(
 
 }); // close router.post('/api/..., ...
 
+//-----------------get all pets
+
 
 router.get('/api/pets', (req, res, next) => {
     if (!req.user) {
@@ -66,10 +68,6 @@ router.get('/api/pets', (req, res, next) => {
     PetModel
       .find({user:req.user._id})
 
-      // retrieve all the info of the owners (needs "ref" in model)
-
-      // don't retrieve "encryptedPassword" though
-
       .exec((err, allPets) => {
           if (err) {
             res.status(500).json({ message: 'Pet find went wrong' });
@@ -77,7 +75,9 @@ router.get('/api/pets', (req, res, next) => {
           }
 
           res.status(200).json(allPets);
+
       });
+
 }); // close router.get('/api/camels', ...
 
 //-------------------get other users pets
@@ -91,10 +91,6 @@ router.get('/api/pets/:id', (req, res, next) => {
     PetModel
       .find({user:req.params.id})
 
-      // retrieve all the info of the owners (needs "ref" in model)
-
-      // don't retrieve "encryptedPassword" though
-
       .exec((err, allPets) => {
           if (err) {
             res.status(500).json({ message: 'Pet find went wrong' });
@@ -102,8 +98,55 @@ router.get('/api/pets/:id', (req, res, next) => {
           }
 
           res.status(200).json(allPets);
+
       });
+
 }); // close router.get('/api/camels', ...
+
+//------------------edit pets
+
+router.put('/api/pets/:id', (req, res) => {
+  if (req.isAuthenticated()) {
+
+    console.log("this is the req body", req.body)
+ 
+    const update = {
+        name: req.body.petName,
+        age: req.body.petAge
+    };
+
+    console.log("this is the update:", update)
+
+    PetModel.findByIdAndUpdate(req.params.id, update, (err) => {
+      if (err) {
+        res.json({message: 'Please fill out all fields before saving.'});
+        return;
+      }
+
+      res.json({message: 'Pet updated successfully'});
+    });
+  }
+  else // otherwise res serve 403 (forbidden)
+  res.status(403).json({ message: 'Unauthorized. Please login.' });
+});
+
+//----------------delete pets
+
+router.delete('/api/pets/:id', (req, res) => {
+  if (req.isAuthenticated()) {
+
+    PetModel.findByIdAndRemove(req.params._id, (err) => {
+      if (err) {
+        res.json({message: 'Something went wrong. Please Try again.'});
+        return;
+      }
+
+      res.json({message: 'Pet Deleted!'});
+    });
+  }
+  else // otherwise res serve 403 (forbidden)
+  res.status(403).json({ message: 'You can\'t do that. Please log in first.' });
+});
 
 
 module.exports = router;

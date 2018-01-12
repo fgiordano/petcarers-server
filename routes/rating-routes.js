@@ -5,47 +5,49 @@ var mongoose = require('mongoose');
 const ReviewModel = require('../models/rating-model');
 const User = require ('../models/user-model');
 
-router.post('/api/reviews/:id', (req, res, next) => {
+router.post('/api/reviews/', (req, res, next) => {
       if (!req.user) {
         res.status(401).json({ message: 'Log in to leave a review' });
         return;
       }
 
-      const theReview = new ReviewModel({
-        content: req.body.reviewContent,
-        author: req.user._id,
-        aboutCarer: req.params.id
-      });
+      console.log("BODY STUFF = ", req.body);
 
-      User.findById(req.params.id, (err, user) => {
+      const superReview = new ReviewModel({
+        content: req.body.content,
+        author: req.user._id,
+        aboutCarer: req.body.aboutCarer
+      });
+      console.log("BODY STUFF = ", superReview);
+
+
+      User.findById(req.body.aboutCarer, (err, user) => {
         if (err) {
           res.json(err);
           return;
         }
+        console.log("USER = ", user);
 
-        theReview.save((err, review) => {
+        console.log("BODY STUFF = ", superReview);        
+        superReview.save((err, review) => {
           // Unknown error from the database
           if (err) {
             res.status(500).json({ message: 'Review save went wrong' + err });
             return;
           }
           user.receivedRatings.push(review._id);
-         
 
         user.save((err) => {
           if (err) {
             console.log('Errors saving USER in New Rating Route',err)
             return res.status(500).json({message: 'Something went wrong.',err});
           } else {
-            res.status(200).json(theReview);
+            res.status(200).json(superReview);
           }
-
         });
 
       }); // close the review save
-
     }); // close user find by id
-
 }); // close router.post('/api/..., ...
 
 

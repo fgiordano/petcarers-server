@@ -10,6 +10,8 @@ const router = express.Router();
 //   }
 // });
 
+//--------get another user
+
 router.get('/api/user/:id', (req, res) => {
 
   // if (req.isAuthenticated()) {
@@ -57,18 +59,18 @@ router.get('/api/user/', (req, res) => {
 });
 
 
-router.get('/api/users', (req, res, next)=>{
+// router.get('/api/users', (req, res, next)=>{
 
-  User.find((err, usersList)=>{
-    if(err){
-      res.json(err);
-      return;
-    }
-    res.json(usersList);
-  });
-});
+//   User.find((err, usersList)=>{
+//     if(err){
+//       res.json(err);
+//       return;
+//     }
+//     res.json(usersList);
+//   });
+// });
 
-//-------------------------------------------------------- Edit admin route
+//------------------ edit current user
 router.put('/api/user/edit', (req, res) => {
   if (req.isAuthenticated()) {
     // if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
