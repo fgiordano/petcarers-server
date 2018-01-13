@@ -13,7 +13,7 @@ const myUserSchema = new Schema({
   // role         : { type: String, enum: ROLES },
   pets            : [{ type: Schema.Types.ObjectId, 'default': [], ref: 'Pet'}],
   receivedRatings : [{ type: Schema.Types.ObjectId, 'default': [], ref: 'Rating'}],
-  image           : { type: String, default: "https://www.menon.no/wp-content/uploads/person-placeholder.jpg" }
+  image           : { type: String, default: "https://www.atomix.com.au/media/2015/06/atomix_user31.png" }
 }, {
   timestamps: {
     createdAt: 'created_at',

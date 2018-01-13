@@ -12,7 +12,7 @@ const myPetSchema = new Schema({
   aboutme    : { type: String },
   weight     : { type: Number },
   age        : { type: Number, required: true },
-  // image     : { type: String, default: "https://www.menon.no/wp-content/uploads/person-placeholder.jpg" }
+  image     : { type: String, default: "https://d1yn1kh78jj1rr.cloudfront.net/image/thumbnail/EjCOTSyclikblrjen/graphicstock-illustration-of-a-pitbull-dog-head-with-tongue-out-set-inside-circle-on-isolated-background-done-in-retro-woodcut-style_HexyIO-BTl_thumb.jpg" }
   // imgUrl     : { type: String, default: "https://placeholdit.imgix.net/~text?txtsize=33&txt=250%C3%97250&w=250&h=250" }
 });
 
