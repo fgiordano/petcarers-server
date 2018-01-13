@@ -79,7 +79,8 @@ router.put('/api/user/edit', (req, res) => {
     // }
     const update = {
       // avatarUrl : req.body.avatarUrl,
-      username : req.body.username
+      username : req.body.username,
+      aboutme: req.body.aboutme
       // password : req.body.password
     };
 

@@ -11,6 +11,8 @@ router.post('/api/signup', (req, res, next) => {
 
   const username = req.body.username;
   const password = req.body.password;
+  const email = req.body.email;
+  const aboutme = req.body.aboutme;
 
   //second step of sign up
   if (!username || !password) {
@@ -28,7 +30,9 @@ router.post('/api/signup', (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hashPass = bcrypt.hashSync(password, salt);
     const theUser = new User({
+      aboutme: aboutme,
       username: username,
+      email: email,
       password: hashPass,
     });
 

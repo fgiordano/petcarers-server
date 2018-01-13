@@ -21,6 +21,8 @@ router.post(
       }
 
       const thePet = new PetModel({
+        name: req.body.petBreed,
+        name: req.body.petAbout,
         name: req.body.petName,
         age: req.body.petAge,
         user: req.user._id
