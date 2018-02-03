@@ -58,10 +58,12 @@ router.post('/api/signup', (req, res, next) => {
 router.post('/api/login', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
+  console.log("USER = ", username);
 
   // const {password, username} = req.body; same as ^
 
   User.findOne({username: username}, (err, foundUser) => {   // query accounts by username entered
+    console.log("USER = ", foundUser);
 
   	if (err) {
   		console.log(err, "Failed to get user in Login Route")
@@ -73,12 +75,12 @@ router.post('/api/login', (req, res, next) => {
     }
 
     if (!foundUser) { // checks if username exists
-      res.status(400).json({message: 'Email entered does not exist in the database. Please try a different email or sign up for a new account.'});
+      res.status(400).json({message: 'User entered does not exist in the database. Please try a different email or sign up for a new account.'});
       return;
     }
 
     if (!bcrypt.compareSync(password, foundUser.password)) { // checks if user's entered password matches the password encrypted with the foundUser
-    res.status(400).json({message: 'Incorrect password.'});
+    res.status(400).json({message: 'Incorrect password'});
     return;
   }
 
